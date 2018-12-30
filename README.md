@@ -27,6 +27,8 @@ $ slack-emoji-tiles path/to/img -o path/to/output
 - `s`, `tileSize`: (optional, default 128) the size in pixels the resulting tiles should have. Slack's maximum emoji-size is 128x128
 - `u`, `showUsage`: (optional, flag) if present, an example usage of the tiled emoji is printed
 
+Pass short aliases with a single `-` and the full names with `--`
+
 ### Example
 
 For the following example, test.jpg is an image with the intial dimensions 1557 x 2177
@@ -43,3 +45,6 @@ test-0_0.png  test-0_1.png  test-1_0.png  test-1_1.png
 
 ## Uploading to Slack
 I recommend the chrome extension [Slack Emoji Uploader](https://chrome.google.com/webstore/detail/slack-emoji-uploader/jfacjbibcobdehekkieokkloinlfdomg) by Juan Gonzalez
+
+#### Credits
+Image manipulation accomplished using [Jimp](https://www.npmjs.com/package/jimp)
