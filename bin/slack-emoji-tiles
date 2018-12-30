@@ -8,7 +8,7 @@ const optionDefinitions = [
 	{ name: 'image', alias: 'i', type: String, defaultOption: true },
 	{ name: 'outputDir', alias: 'o', type: String, defaultValue: undefined },
 	{ name: 'maxTiles', alias: 't', type: Number, defaultValue: 10 },
-	{ name: 'tileSize', alias: 's', type: Number: defaultValue: 128 }
+	{ name: 'tileSize', alias: 's', type: Number, defaultValue: 128 }
 ];
 // Read command line arguments
 const options = commandLineArgs(optionDefinitions);
@@ -37,8 +37,8 @@ Jimp.read(fileName, (err, emoji) => {
 		height = emoji.bitmap.height;
 	}
 
-	let nearestWidth = nextNearestEmojiMaxDim(width);
-	let nearestHeight = nextNearestEmojiMaxDim(height);
+	let nearestWidth = nextNearestTileMaxDim(width);
+	let nearestHeight = nextNearestTileMaxDim(height);
 
 	let compositex = Math.ceil((nearestWidth - width) / 2);
 	let compositey = Math.ceil((nearestHeight - height) / 2);
