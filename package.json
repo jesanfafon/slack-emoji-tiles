@@ -2,7 +2,10 @@
   "name": "slack-emoji-tiles",
   "version": "0.0.1",
   "description": "Turns an image into an NxM array of emoji for making jumbo-emoji in slack",
-  "main": "index.js",
+  "main": "./bin/slack-emoji-tiles",
+  "bin": {
+    "slack-emoji-tiles": "./bin/slack-emoji-tiles"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
