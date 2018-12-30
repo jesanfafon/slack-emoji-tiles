@@ -2,13 +2,12 @@
 
 var Jimp = require('jimp');
 var path = require('path');
-var fs = require('fs');
 var commandLineArgs = require('command-line-args');
 
 const optionDefinitions = [
 	{ name: 'image', alias: 'i', type: String, defaultOption: true },
 	{ name: 'outputDir', alias: 'o', type: String, defaultValue: undefined },
-	{ name: 'maxTiles', alias: 't', type: Number, defaultValue: 10 }
+	{ name: 'maxTiles', alias: 't', type: Number, defaultValue: 10 },
 	{ name: 'tileSize', alias: 's', type: Number: defaultValue: 128 }
 ];
 // Read command line arguments
