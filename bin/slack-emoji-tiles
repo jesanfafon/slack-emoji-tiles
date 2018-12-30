@@ -1,3 +1,41 @@
 #!/usr/bin/env node
 
-console.log('Hello, World!');
+var Jimp = require('jimp');
+var path = require('path');
+
+
+// TODO: command line args
+
+const fileName = 'okapi_tm.jpg';
+const ext = path.extname(fileName);
+const fileTitle = path.basename(fileName, ext);
+
+Jimp.read(fileName, (err, emoji) => {
+	if (err) throw err;
+	let height = emoji.bitmap.height;
+	let width = emoji.bitmap.width;
+	let nearestHeight = nextNearest128(height);
+	let nearestWidth = nextNearest128(width);
+
+	let compositex = Math.ceil((nearestWidth - width) / 2);
+	let compositey = Math.ceil((nearestHeight - height) / 2);
+
+	const source = new Jimp(nearestWidth, nearestHeight, Jimp.cssColorToHex('rgba(0,0,0,0)'))
+					.composite(emoji, compositex, compositey, {mode: Jimp.BLEND_OVERLAY});
+	for (let i = 0, column = 0; i < nearestWidth; i += 128, column += 1){
+		for (let j = 0, row = 0; j < nearestHeight; j+= 128, row += 1){				
+			let copy = source.clone();
+			copy = copy.crop(i, j, 128, 128);
+			copy.write(`${fileTitle}/${fileTitle}-${row}${column}.png`);
+		}
+	}
+});
+
+// TODO: upload to slack
+
+function nextNearest128(num) {
+	if (typeof num !== 'number') throw 'Dimension not a number';
+	let remainder = num / 128;
+	let multiplier = Math.ceil(remainder);
+	return 128 * multiplier;
+}
