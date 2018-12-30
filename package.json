@@ -35,5 +35,15 @@
   "bugs": {
     "url": "https://github.com/jesanfafon/slack-emoji-tiles/issues"
   },
-  "homepage": "https://github.com/jesanfafon/slack-emoji-tiles#readme"
+  "homepage": "https://github.com/jesanfafon/slack-emoji-tiles#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "cheerio": "^1.0.0-rc.2",
+    "co-prompt": "^1.0.0",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "request": "^2.88.0",
+    "thunkify-wrap": "^1.0.4",
+    "valid-url": "^1.0.9"
+  }
 }
