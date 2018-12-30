@@ -2,24 +2,28 @@
 
 var Jimp = require('jimp');
 var path = require('path');
+var os = require('os');
 var commandLineArgs = require('command-line-args');
 
 const optionDefinitions = [
 	{ name: 'image', alias: 'i', type: String, defaultOption: true },
 	{ name: 'outputDir', alias: 'o', type: String, defaultValue: undefined },
 	{ name: 'maxTiles', alias: 't', type: Number, defaultValue: 10 },
-	{ name: 'tileSize', alias: 's', type: Number, defaultValue: 128 }
+	{ name: 'tileSize', alias: 's', type: Number, defaultValue: 128 },
+	{ name: 'showUsage', alias: 'u', type: Boolean, defaultValue: false }
 ];
 // Read command line arguments
 const options = commandLineArgs(optionDefinitions);
 
 // Extract CLI args
-const tileMaxDim = 128;
+const showUsage = options.showUsage;
+const tileMaxDim = options.tileSize;
 const maxTiles = options.maxTiles;
 const outputDir = options.outputDir;
 const fileName = options.image;
 const ext = path.extname(fileName);
 const fileTitle = path.basename(fileName, ext);
+let emojiArrary = [];
 
 // SLICE
 Jimp.read(fileName, (err, emoji) => {
@@ -45,14 +49,33 @@ Jimp.read(fileName, (err, emoji) => {
 
 	const source = new Jimp(nearestWidth, nearestHeight, Jimp.cssColorToHex('rgba(0,0,0,0)'))
 					.composite(emoji, compositex, compositey, {mode: Jimp.BLEND_OVERLAY});
+
+	emojiArrary = new Array(tileCount(nearestHeight));
+	for (let x = 0; x < emojiArrary.length; x++) emojiArrary[x] = new Array(tileCount(nearestWidth));
+
 	for (let i = 0, column = 0; i < nearestWidth; i += tileMaxDim, column += 1){
 		for (let j = 0, row = 0; j < nearestHeight; j+= tileMaxDim, row += 1){				
 			let copy = source.clone();
 			copy = copy.crop(i, j, tileMaxDim, tileMaxDim);
-			copy.write(`${outputDir || fileTitle}/${fileTitle}-${row}_${column}.png`);
+			let emojiName = `${fileTitle}-${row}_${column}`;
+			copy.write(`${outputDir || fileTitle}/${emojiName}.png`);
+			emojiArrary[row][column] = emojiName;
+		}
+	}
+
+	if (showUsage) {
+		process.stdout.write('After you\'ve uploaded the output sliced emoji to slack, use your jumbo emoji like:')
+		process.stdout.write(os.EOL);
+		for (let row = 0; row < emojiArrary.length; row++) {
+			for (let column = 0; column < emojiArrary[row].length; column++){
+				process.stdout.write(`:${emojiArrary[row][column]}:`);
+			}
+			process.stdout.write(os.EOL);
 		}
 	}
 });
+
+
 
 function tileCount(num) {
 	return num / tileMaxDim;
